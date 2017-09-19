@@ -1,21 +1,21 @@
-Symbol Table
-xy=2
-z=15
-
+terminate called after throwing an instance of 'std::invalid_argument'
+  what():  stoi
 Memory Map
-0: 1004
-1: 5678
-2: 2015
-3: 8002
-4: 7015
-5: 8006
-6: 1015
-7: 1015
-8: 3015
-9: 1007
-10: 1010
-11: 5012
-12: 4015
-13: 8000
-14: 1002
-15: 2002
+0:	1004
+1:	5678
+2:	2777 external
+3:	8002
+4:	7002 external
+5:	8006
+6:	1777 external
+7:	1006 external
+8:	3007 external
+9:	1007
+10:	1010
+11:	5012
+12:	4777 external
+13:	8000
+14:	1777 external
+15:	2014 external
+Error at Index 12: Immediate Address on use list; treated as External.
+Error at Index 26: Immediate Address on use list; treated as External.

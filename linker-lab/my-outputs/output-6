@@ -1,3 +1,9 @@
+Memory Map
+0:	1001
+1:	1777
+2:	1000
+3:	2456
+4:	3456
 Error at Index 2: Immediate Address on use list; treated as External.
 Error at Index 0: Immediate Address on use list; treated as External.
 Error at Index 1: Immediate Address on use list; treated as External.
@@ -7,8 +13,8 @@ X21=4
 X31=4
 
 Memory Map
-0: 1004
-1: 1004
-2: 1004
-3: 2456
-4: 3456
+0:	1004
+1:	1004
+2:	1004
+3:	2456
+4:	3456

@@ -1,10 +1,16 @@
+Memory Map
+0:	1001 external
+1:	1777 external
+2:	1000 external
+3:	2456
+4:	3456
 Error at Index 2: Command listed as External was not included in use chain. Treated as Immediate command.
 Symbol Table
 X21=3
 
 Memory Map
-0: 1003
-1: 1003
-2: 1000
-3: 2456
-4: 3456
+0:	1003
+1:	1003
+2:	1000
+3:	2456
+4:	3456
