@@ -1,11 +1,12 @@
+Error: The definition of X21 is outside of the module it is defined in; zero (relative) used.
 Warning: X31 was defined, but never used.
 Symbol Table
-X21=4
+X21=3
 X31=4
 
 Memory Map
-0:	1004
-1:	1004
-2:	1004
+0:	1003
+1:	1003
+2:	1003
 3:	2456
 4:	3456

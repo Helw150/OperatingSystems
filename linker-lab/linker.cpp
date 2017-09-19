@@ -40,7 +40,7 @@ void print_memory_map(vector<string> vector){
   cout << "Memory Map\n";
   for (auto i = vector.begin(); i != vector.end(); ++i)
     {
-      cout << command_index << ": " << *i << '\n';
+      cout << command_index << ":\t" << *i << '\n';
       command_index++;
     }
   return;
@@ -60,6 +60,7 @@ tuple<unordered_map<string, int>, unordered_map<string, bool>> add_definitions(v
   return make_tuple(variable_table, variable_usage);
 }
 
+// A function to find the use definitions in each module. Locality is defined as the module that this definition line is operating in
 tuple<unordered_map<int, string>, unordered_map<string,bool>> local_define(vector<string> line_array, unordered_map<string, bool> variable_usage, int base_address)
 {
   unordered_map<int, string> local_definitions;
@@ -88,7 +89,7 @@ tuple<int,vector<string>> use_command(vector<string> program_array, vector<strin
     switch(command)
       {
       case 1:
-        program_array.push_back(address);
+        program_array.push_back(address+ " immediate");
         break;
       case 2:
         program_array.push_back(address);
@@ -190,10 +191,12 @@ vector<string> replace_external(int index, string variable_name, vector<string> 
       iss >> subs;
       current_array.push_back(subs);
     }
-  if (current_array[1] != "external"){
+  int next_index = 0;
+  if (current_array[1] == "immediate"){
     cout << "Error at Index " << index <<": Immediate Address on use list; treated as External.\n";
+    next_index += base_address;
   }
-  int next_index = (stoi(current_array[0])-1000*(stoi(current_array[0])/1000));
+  next_index += (stoi(current_array[0])-1000*(stoi(current_array[0])/1000));
   if (next_index != 777){
     program_array = replace_external(next_index, variable_name, program_array, local_definitions, variable_definitions, base_address);
   }
@@ -231,7 +234,17 @@ tuple<unordered_map<string, int>, unordered_map<string,bool>, vector<string>> fi
           break;
         case 2:
           // Handles the module itself
+          int previous_base;
+          previous_base = base_address;
           tie(base_address, program_array) = use_command(program_array, line_array, base_address);
+          for (auto i = variable_table.begin(); i != variable_table.end(); i++)
+            {
+              if(i->second >= base_address)
+                {
+                cout << "Error: The definition of " << i->first << " is outside of the module it is defined in; zero (relative) used.\n";
+                i->second = previous_base;
+                }
+            }
           break;
         default:
           // Handles what should be an impossible error case
@@ -287,8 +300,12 @@ vector<string> second_pass(vector<vector<string>> doc_array, unordered_map<strin
           iss >> subs;
           external_check_array.push_back(subs);
         }
-      if (external_check_array.size() > 2){
-        cout << "Error at Index " << i << ": Command listed as External was not included in use chain. Treated as Immediate command.\n";
+      if (external_check_array.size() > 2)
+        {
+        if (external_check_array[1] == "external")
+          {
+            cout << "Error at Index " << i << ": Command listed as External was not included in use chain. Treated as Immediate command.\n";
+          }
         program_array[i] = external_check_array[0];
       }
     }
