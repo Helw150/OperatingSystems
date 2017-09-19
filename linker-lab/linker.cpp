@@ -40,7 +40,7 @@ void print_memory_map(vector<string> vector){
   cout << "Memory Map\n";
   for (auto i = vector.begin(); i != vector.end(); ++i)
     {
-      cout << command_index << ":\t" << *i << '\n';
+      cout << command_index << ": " << *i << '\n';
       command_index++;
     }
   return;
