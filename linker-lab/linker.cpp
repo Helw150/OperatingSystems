@@ -29,7 +29,7 @@ void print_map(unordered_map<string, int> map){
 
 // print a vector map in the format for grading
 void print_symbols(unordered_map<string, int> symbols){
-  cout << "Symbol Table\n";
+  cout << "\nSymbol Table\n";
   print_map(symbols);
   return;
 }
@@ -320,6 +320,7 @@ int main( int argc, char *argv[])
   unordered_map<string, int> variable_table;
   unordered_map<string,bool> variable_usage;
   vector<string> program_array;
+  cout << "Runtime Warnings and Errors\n";
   tie(variable_table, variable_usage, program_array) = first_pass(doc_array);
   program_array = second_pass(doc_array, variable_table, variable_usage, program_array);
   variable_table.erase("N/A");
