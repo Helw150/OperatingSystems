@@ -7,4 +7,5 @@ Building has been tested on crackle1 using `g++ -std=c++11 linker.cpp`
 
 The code takes the target file name as a command line argument: `./a.out YOUR_FILENAME_HERE`
 
-The code can be run across all test cases given to us using: `bash run_tests.sh`
+# Quick Check
+The code can be built and run across all test cases given with the assignment using: `bash run_tests.sh`
