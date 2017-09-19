@@ -47,23 +47,34 @@ void print_memory_map(vector<string> vector){
 }
 
 // A function to add any new definitions in the line to the variable table
-unordered_map<string, int> add_definitions(vector<string> line_array, unordered_map<string,int> variable_table, int base_address) {
+tuple<unordered_map<string, int>, unordered_map<string, bool>> add_definitions(vector<string> line_array, unordered_map<string,int> variable_table, unordered_map<string,bool> variable_usage, int base_address) {
   for (int i = 0; i < (line_array.size()-2)/2; i++)
     {
-      variable_table.emplace(line_array[2*i+1], stoi(line_array[2*i+2])+base_address);
+      if(variable_usage.find(line_array[2*i+1]) == variable_usage.end()){
+        variable_usage.emplace(line_array[2*i+1], false);
+        variable_table.emplace(line_array[2*i+1], stoi(line_array[2*i+2])+base_address);
+      } else {
+        cout << "Error in definitions for module +" << base_address << ": " << line_array[2*i+1] << " is already defined. First definition used\n";
+      }
     }
-  return variable_table;
+  return make_tuple(variable_table, variable_usage);
 }
 
-unordered_map<int, string> local_define(vector<string> line_array, int base_address)
+tuple<unordered_map<int, string>, unordered_map<string,bool>> local_define(vector<string> line_array, unordered_map<string, bool> variable_usage, int base_address)
 {
   unordered_map<int, string> local_definitions;
   for (int i = 0; i < (line_array.size()-2)/2; i++)
     {
-
-      local_definitions.emplace(base_address+stoi(line_array[2*i+2]), line_array[2*i+1]);
+      if(variable_usage.find(line_array[2*i+1]) != variable_usage.end())
+        {
+          variable_usage.find(line_array[2*i+1])->second = true;
+          local_definitions.emplace(base_address+stoi(line_array[2*i+2]), line_array[2*i+1]);
+        } else {
+        cout << "Error in Definition for Module +"<< base_address << ": " << line_array[2*i+1] << " is not defined; zero will be used instead.\n";
+        local_definitions.emplace(base_address+stoi(line_array[2*i+2]), "N/A");
+      }
     }
-  return local_definitions;
+return make_tuple(local_definitions, variable_usage);
 }
 // Handle the first pass of use commands
 tuple<int,vector<string>> use_command(vector<string> program_array, vector<string>line_array, int base_address){
@@ -95,7 +106,7 @@ tuple<int,vector<string>> use_command(vector<string> program_array, vector<strin
           } else {
           address = to_string((instruction/10));
         }
-        program_array.push_back("external "+address);
+        program_array.push_back(address+" external");
         break;
       default:
         cout << "This should never occur. If it does, please debug the code" << "\n";
@@ -167,7 +178,7 @@ vector<vector<string>> ingest_document(int argc, char *argv[])
   return doc_array;
 }
 
-vector<string> replace_external(int index, string variable_name, vector<string> program_array, unordered_map<int,string> local_definitions, unordered_map<string,int> variable_definitions)
+vector<string> replace_external(int index, string variable_name, vector<string> program_array, unordered_map<int,string> local_definitions, unordered_map<string,int> variable_definitions, int base_address)
 {
   string current = program_array[index];
   vector<string> current_array;
@@ -179,29 +190,29 @@ vector<string> replace_external(int index, string variable_name, vector<string> 
       iss >> subs;
       current_array.push_back(subs);
     }
-  if (current_array[0] != "external"){
-    cout << index << " " << "Error here\n";
-    exit(-1);
+  if (current_array[1] != "external"){
+    cout << "Error at Index " << index <<": Immediate Address on use list; treated as External.\n";
   }
-  int next_index = stoi(current_array[1])-1000*(stoi(current_array[1])/1000);
+  int next_index = (stoi(current_array[0])-1000*(stoi(current_array[0])/1000));
   if (next_index != 777){
-    program_array = replace_external(next_index, variable_name, program_array, local_definitions, variable_definitions);
+    program_array = replace_external(next_index, variable_name, program_array, local_definitions, variable_definitions, base_address);
   }
-  program_array[index] = to_string(variable_definitions.find(variable_name)->second+1000*(stoi(current_array[1])/1000));
+  program_array[index] = to_string(variable_definitions.find(variable_name)->second+1000*(stoi(current_array[0])/1000));
   return program_array;
 }
 
-vector<string> second_pass_use(vector<string> program_array, unordered_map<string,int> variable_definitions, unordered_map<int,string> local_definitions)
+vector<string> second_pass_use(vector<string> program_array, unordered_map<string,int> variable_definitions, unordered_map<int,string> local_definitions, int base_address)
 {
   for (auto i = local_definitions.begin(); i != local_definitions.end(); i++)
     {
-      program_array = replace_external(i->first, i->second, program_array, local_definitions, variable_definitions);
+      program_array = replace_external(i->first, i->second, program_array, local_definitions, variable_definitions, base_address);
     }
   return program_array;
 }
-tuple<unordered_map<string, int>, vector<string>> first_pass(vector<vector<string>> doc_array)
+tuple<unordered_map<string, int>, unordered_map<string,bool>, vector<string>> first_pass(vector<vector<string>> doc_array)
 {
-  unordered_map<string, int> variable_table;
+  unordered_map<string, int> variable_table = {{"N/A",0}};
+  unordered_map<string, bool> variable_usage;
   vector<string> program_array;
   int line_counter = 0;
   int base_address = 0;
@@ -213,7 +224,7 @@ tuple<unordered_map<string, int>, vector<string>> first_pass(vector<vector<strin
         {
         case 0:
           // Handles the declaration of variables
-          variable_table = add_definitions(line_array, variable_table, base_address);
+          tie(variable_table, variable_usage) = add_definitions(line_array, variable_table, variable_usage, base_address);
           break;
         case 1:
           // Handles the usage of variables
@@ -229,10 +240,10 @@ tuple<unordered_map<string, int>, vector<string>> first_pass(vector<vector<strin
         }
       line_counter++;
     }
-  return make_tuple(variable_table, program_array);
+  return make_tuple(variable_table, variable_usage, program_array);
 }
 
-vector<string> second_pass(vector<vector<string>> doc_array, unordered_map<string,int> variable_table, vector<string> program_array)
+vector<string> second_pass(vector<vector<string>> doc_array, unordered_map<string,int> variable_table, unordered_map<string, bool> variable_usage,  vector<string> program_array)
 {
   int line_counter = 0;
   int base_address = 0;
@@ -247,11 +258,11 @@ vector<string> second_pass(vector<vector<string>> doc_array, unordered_map<strin
           break;
         case 1:
           // Handles the usage of variables
-          local_definitions = local_define(line_array, base_address);
+          tie(local_definitions, variable_usage) = local_define(line_array, variable_usage, base_address);
           break;
         case 2:
           // Handles the module itself
-          program_array = second_pass_use(program_array, variable_table, local_definitions);
+          program_array = second_pass_use(program_array, variable_table, local_definitions, base_address);
           int line_length;
           line_length = stoi(line_array[0]);
           base_address += line_length;
@@ -263,6 +274,24 @@ vector<string> second_pass(vector<vector<string>> doc_array, unordered_map<strin
         }
       line_counter++;
     }
+  for (auto i = variable_usage.begin(); i != variable_usage.end(); i++)
+    if(!i->second)
+      cout << "Warning: " << i->first << " was defined, but never used.\n";
+  for (int i =  0; i < program_array.size(); i++)
+    {
+      istringstream iss(program_array[i]);
+      vector<string> external_check_array;
+      while (iss)
+        {
+          string subs;
+          iss >> subs;
+          external_check_array.push_back(subs);
+        }
+      if (external_check_array.size() > 2){
+        cout << "Error at Index " << i << ": Command listed as External was not included in use chain. Treated as Immediate command.\n";
+        program_array[i] = external_check_array[0];
+      }
+    }
   return program_array;
 }
 
@@ -272,10 +301,12 @@ int main( int argc, char *argv[])
 {
   vector<vector<string>> doc_array = ingest_document(argc, argv);
   unordered_map<string, int> variable_table;
+  unordered_map<string,bool> variable_usage;
   vector<string> program_array;
-  tie(variable_table, program_array) = first_pass(doc_array);
+  tie(variable_table, variable_usage, program_array) = first_pass(doc_array);
+  program_array = second_pass(doc_array, variable_table, variable_usage, program_array);
+  variable_table.erase("N/A");
   print_symbols(variable_table);
-  program_array = second_pass(doc_array, variable_table, program_array);
   print_memory_map(program_array);
   return 0;
 }
