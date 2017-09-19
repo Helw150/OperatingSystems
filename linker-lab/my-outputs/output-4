@@ -1,9 +1,10 @@
+Error in definitions for module +4: X21 is already defined. First definition used
 Symbol Table
-X21=3 Error: This variable is multiply defined; first value used.
+X21=3
 
 Memory Map
-0:  1003
-1:  1003
-2:  1003
-3:  2456
-4:  3456
+0: 1003
+1: 1003
+2: 1003
+3: 2456
+4: 3456
