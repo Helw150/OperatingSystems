@@ -1,10 +1,3 @@
-Memory Map
-0:	2009
-1:	2001
-2:	2777 external
-3:	2000
-4:	2000
-5:	3005
 Error at Index 3: Immediate Address on use list; treated as External.
 Error at Index 1: Immediate Address on use list; treated as External.
 Symbol Table

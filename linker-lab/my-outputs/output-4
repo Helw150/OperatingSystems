@@ -1,13 +1,4 @@
 Error in definitions for module +4: X21 is already defined. First definition used
-Memory Map
-0:	1001
-1:	1777
-2:	1000
-3:	2456
-4:	3456
-Error at Index 2: Immediate Address on use list; treated as External.
-Error at Index 0: Immediate Address on use list; treated as External.
-Error at Index 1: Immediate Address on use list; treated as External.
 Symbol Table
 X21=3
 

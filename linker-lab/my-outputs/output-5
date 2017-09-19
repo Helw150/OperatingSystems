@@ -1,13 +1,4 @@
-Memory Map
-0:	1001
-1:	1777
-2:	1000
-3:	2456
-4:	3456
 Error in Definition for Module +0: X21 is not defined; zero will be used instead.
-Error at Index 2: Immediate Address on use list; treated as External.
-Error at Index 0: Immediate Address on use list; treated as External.
-Error at Index 1: Immediate Address on use list; treated as External.
 Warning: X31 was defined, but never used.
 Symbol Table
 X31=4
