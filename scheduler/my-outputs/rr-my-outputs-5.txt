@@ -1,0 +1,35 @@
+The original input was: 3 (1 5 30 2) (1 5 30 2) (0 5 30 2) 
+The sorted input was:   3 (0 5 30 2) (1 5 30 2) (1 5 30 2) 
+quantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumThe Scheduling Algorithm used was Round Robin
+
+Process 0:
+	(A,B,C,M) = (0,5,30,2)
+	Finishing Time: 106
+	Turnaround Time: 106
+	I/O Time: 56
+	Waiting Time: 20
+
+
+Process 1:
+	(A,B,C,M) = (1,5,30,2)
+	Finishing Time: 104
+	Turnaround Time: 103
+	I/O Time: 54
+	Waiting Time: 19
+
+
+Process 2:
+	(A,B,C,M) = (1,5,30,2)
+	Finishing Time: 109
+	Turnaround Time: 108
+	I/O Time: 54
+	Waiting Time: 24
+
+
+Summary Data:
+	Finishing Time: 109
+	CPU Utilization: 0.825688
+	I/O Utilization: 0.825688
+	Throughput: 2.75229 processes per hundred cycles
+	Average Turnaround: 105.667
+	Average Waiting Time: 16.3333

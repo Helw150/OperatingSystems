@@ -1,0 +1,35 @@
+The original input was: 3 (0 1 20 1) (0 1 20 1) (10 1 10 1) 
+The sorted input was:   3 (0 1 20 1) (0 1 20 1) (10 1 10 1) 
+The Scheduling Algorithm used was Highest Penalty Ratio Next
+
+Process 0:
+	(A,B,C,M) = (0,1,20,1)
+	Finishing Time: 44
+	Turnaround Time: 44
+	I/O Time: 19
+	Waiting Time: 5
+
+
+Process 1:
+	(A,B,C,M) = (0,1,20,1)
+	Finishing Time: 49
+	Turnaround Time: 49
+	I/O Time: 19
+	Waiting Time: 10
+
+
+Process 2:
+	(A,B,C,M) = (10,1,10,1)
+	Finishing Time: 50
+	Turnaround Time: 40
+	I/O Time: 9
+	Waiting Time: 21
+
+
+Summary Data:
+	Finishing Time: 50
+	CPU Utilization: 1
+	I/O Utilization: 0.94
+	Throughput: 6 processes per hundred cycles
+	Average Turnaround: 44.3333
+	Average Waiting Time: 12

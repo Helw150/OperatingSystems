@@ -1,7 +1,7 @@
 
-#ifndef SCHEDULER_DEFINED
-#define SCHEDULER_DEFINED
-#include <string>
+#ifndef process_header
+#define process_header
+
 
 using namespace std;
 
@@ -24,7 +24,7 @@ public:
     int finish_time;
     int quantum;
     int ready_time;
-    string status;
+    int status;
 };
 
 #endif

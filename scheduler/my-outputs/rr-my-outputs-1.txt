@@ -1,0 +1,19 @@
+The original input was: 1 (0 1 5 1) 
+The sorted input was:   1 (0 1 5 1) 
+The Scheduling Algorithm used was Round Robin
+
+Process 0:
+	(A,B,C,M) = (0,1,5,1)
+	Finishing Time: 9
+	Turnaround Time: 9
+	I/O Time: 4
+	Waiting Time: 0
+
+
+Summary Data:
+	Finishing Time: 9
+	CPU Utilization: 0.555556
+	I/O Utilization: 0.444444
+	Throughput: 11.1111 processes per hundred cycles
+	Average Turnaround: 9
+	Average Waiting Time: 0

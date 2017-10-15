@@ -1,0 +1,51 @@
+The original input was: 5 (0 3 200 3) (0 9 500 2) (0 20 500 1) (100 1 100 3) (100 100 500 1) 
+The sorted input was:   5 (0 3 200 3) (0 9 500 2) (0 20 500 1) (100 1 100 3) (100 100 500 1) 
+The Scheduling Algorithm used was Highest Penalty Ratio Next
+
+Process 0:
+	(A,B,C,M) = (0,3,200,3)
+	Finishing Time: 1597
+	Turnaround Time: 1597
+	I/O Time: 591
+	Waiting Time: 806
+
+
+Process 1:
+	(A,B,C,M) = (0,9,500,2)
+	Finishing Time: 2178
+	Turnaround Time: 2178
+	I/O Time: 998
+	Waiting Time: 680
+
+
+Process 2:
+	(A,B,C,M) = (0,20,500,1)
+	Finishing Time: 1652
+	Turnaround Time: 1652
+	I/O Time: 497
+	Waiting Time: 655
+
+
+Process 3:
+	(A,B,C,M) = (100,1,100,3)
+	Finishing Time: 1861
+	Turnaround Time: 1761
+	I/O Time: 297
+	Waiting Time: 1364
+
+
+Process 4:
+	(A,B,C,M) = (100,100,500,1)
+	Finishing Time: 1216
+	Turnaround Time: 1116
+	I/O Time: 495
+	Waiting Time: 121
+
+
+Summary Data:
+	Finishing Time: 2178
+	CPU Utilization: 0.826446
+	I/O Utilization: 0.688246
+	Throughput: 0.229568 processes per hundred cycles
+	Average Turnaround: 1660.8
+	Average Waiting Time: 298.2
