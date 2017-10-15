@@ -1,6 +1,6 @@
 The original input was: 3 (1 5 30 2) (1 5 30 2) (0 5 30 2) 
 The sorted input was:   3 (0 5 30 2) (1 5 30 2) (1 5 30 2) 
-quantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumquantumThe Scheduling Algorithm used was Round Robin
+The Scheduling Algorithm used was Round Robin
 
 Process 0:
 	(A,B,C,M) = (0,5,30,2)
