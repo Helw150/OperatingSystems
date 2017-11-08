@@ -30,7 +30,7 @@ class Deadlock {
   void print_results();
   
   // Variables
-  int phase;
+  int phase, total_time, total_wait;
   map<int, Process> process_table;
   map<int, string> results_table;
   unordered_map<int,int> available_resources;

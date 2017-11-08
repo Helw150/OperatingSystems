@@ -9,7 +9,7 @@ class Process {
 public:
 
   Process();
-  int finish, waiting;
+  int finish, waiting, current_wait;
   queue<vector<int>> instructions;
   unordered_map<int, int> requests;
   unordered_map<int, int> owned;
