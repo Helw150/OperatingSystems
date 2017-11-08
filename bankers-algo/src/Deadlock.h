@@ -4,6 +4,7 @@
 #include <vector>
 #include <sstream>
 #include <unordered_map>
+#include <map>
 #include <iostream>
 #include <string>
 #include <stdio.h>
@@ -23,12 +24,16 @@ class Deadlock {
   void process_runtime(int type, string line);
   void handle_compute(string line);
   void process_head(string line);
-
+  void optimistic_run();
+  void kill_process(int pid_for_death, Process process_for_death);
+  void release_resources(unordered_map<int,int> released);
+  void print_results();
+  
   // Variables
   int phase;
-  unordered_map<int, Process> process_table;
-  vector<int> max_resource_vector;
-  vector<int> available_resource_vector;
+  map<int, Process> process_table;
+  map<int, string> results_table;
+  unordered_map<int,int> available_resources;
   int num_processes;
   int num_resources;
 };

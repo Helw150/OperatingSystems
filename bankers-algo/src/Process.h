@@ -2,13 +2,15 @@
 #define process_header
 #include <unordered_map>
 #include <vector>
+#include <queue>
 using namespace std;
 
 class Process {
 public:
 
   Process();
-  vector<vector<int>> instructions;
+  int finish, waiting;
+  queue<vector<int>> instructions;
   unordered_map<int, int> requests;
   unordered_map<int, int> owned;
 };
