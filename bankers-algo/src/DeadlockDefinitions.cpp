@@ -47,7 +47,55 @@ vector<pair<int, Process>> sort_by_wait_time(map<int, Process> process_table){
   return mapVector;
 }
 
+bool Deadlock::banker_safe(vector<int> command, int command_pid){
+  // Set up a toy space in which this step happens
+  Deadlock toy_space = *this;
+  toy_space.available_resources[command[1]] -= command[2];
+  toy_space.process_table[command_pid].owned[command[1]] += command[2];
+  // Try to complete all processes using maximum greed
+  int num_complete = 0;
+  int num_current_process = toy_space.process_table.size();
+  while(num_complete < num_current_process){
+    bool can_complete;
+    bool did_complete = false;
+    for(auto i = toy_space.process_table.begin(); i != toy_space.process_table.end(); i++){
+      unordered_map<int,int> needed = i->second.requests;
+      can_complete = true;
+      for(auto j = needed.begin(); j != needed.end(); j++){
+	needed[j->first] -= i->second.owned[j->first];
+	if(needed[j->first] > toy_space.available_resources[j->first]){
+	  can_complete = false;
+	  break;
+	}
+      }
+      if(can_complete){
+	for(auto j = i->second.owned.begin(); j != i->second.owned.end(); j++){
+	  toy_space.available_resources[j->first] += j->second;
+	}
+	toy_space.process_table.erase(i->first);
+	num_complete++;
+	did_complete = true;
+	break;
+      }
+    }
+    if(!did_complete){
+      return false;
+    }
+  }
+  return true;
+}
+
 void Deadlock::optimistic_run(){
+  simulate(false);
+  return;
+}
+
+void Deadlock::bankers_algo(){
+  simulate(true);
+  return;
+}
+
+void Deadlock::simulate(bool banker){
   int current_pid, num_finished = 0;
   bool chain_abort = false;
   while(num_finished < num_processes){
@@ -67,7 +115,8 @@ void Deadlock::optimistic_run(){
       vector<int> command = current_process.instructions.front();
       switch(command[0]){
       case 0: // Requesting resources
-	if(available_resources[command[1]] >= command[2]){
+	// If resources and either not banker or safe state
+	if(available_resources[command[1]] >= command[2] && (!banker || banker_safe(command, current_pid))){
 	  //cout << current_pid << " request\n";
 	  chain_abort = false;
 	  process_table[current_pid].current_wait = 0;
@@ -110,7 +159,8 @@ void Deadlock::optimistic_run(){
 	break;
       }
     }
-    if(num_blocked != 0 && num_blocked == (num_processes - num_finished)){
+    // If not banker check for deadlock and abort
+    if(!banker && num_blocked != 0 && num_blocked == (num_processes - num_finished)){
       int pid_for_death = process_table.begin()->first;
       //cout << pid_for_death << " aborted\n";
       Process process_for_death = process_table.begin()->second;
@@ -124,7 +174,11 @@ void Deadlock::optimistic_run(){
     }
     release_resources(released);
   }
-  cout << "              FIFO\n";
+  if(banker){
+    cout << "              Banker's\n";
+  } else {
+    cout << "              FIFO\n";
+  }
   print_results();
   return;
 }

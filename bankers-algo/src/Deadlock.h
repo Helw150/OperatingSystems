@@ -25,6 +25,9 @@ class Deadlock {
   void handle_compute(string line);
   void process_head(string line);
   void optimistic_run();
+  void bankers_algo();
+  void simulate(bool banker);
+  bool banker_safe(vector<int> command, int command_pid);
   void kill_process(int pid_for_death, Process process_for_death);
   void release_resources(unordered_map<int,int> released);
   void print_results();
