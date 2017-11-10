@@ -30,6 +30,7 @@ class Deadlock {
   bool banker_safe(vector<int> command, int command_pid);
   void kill_process(int pid_for_death, Process process_for_death);
   void release_resources(unordered_map<int,int> released);
+  void check_exceeds();
   void print_results();
   
   // Variables

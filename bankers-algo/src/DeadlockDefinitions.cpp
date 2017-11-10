@@ -41,7 +41,7 @@ bool cmp (pair<int, Process> i, pair<int, Process> j) {
 vector<pair<int, Process>> sort_by_wait_time(map<int, Process> process_table){
   vector<pair<int, Process>> mapVector;
   for (auto iterator = process_table.begin(); iterator != process_table.end(); ++iterator) {
-      mapVector.push_back(*iterator);
+    mapVector.push_back(*iterator);
   }
   sort(mapVector.begin(), mapVector.end(), cmp);
   return mapVector;
@@ -95,12 +95,28 @@ void Deadlock::bankers_algo(){
   return;
 }
 
+void Deadlock::check_exceeds(){
+  for(auto i = process_table.begin(); i != process_table.end(); i++){
+    int process_number = i->first;
+    Process process_checked = i->second;
+    for(auto j = process_checked.requests.begin(); j != process_checked.requests.end(); j++){
+      int resource_number = j->first, resource_amount = j->second;
+      if(available_resources[resource_number] < resource_amount){
+	results_table.emplace(process_number, "Aborted - Claim exceeds existing resources");
+	kill_process(process_number, process_checked);
+	num_processes--;
+      }
+    }
+  }
+}
+
 void Deadlock::simulate(bool banker){
   int current_pid, num_finished = 0;
   bool chain_abort = false;
+  check_exceeds();
   while(num_finished < num_processes){
     ++phase;
-    //cout << ++phase << "-------------------\n";
+    //cout << phase << "-------------------\n";
     // This variable stores all releases to perform at the end of the cycle
     
     unordered_map<int, int> released;
@@ -116,20 +132,26 @@ void Deadlock::simulate(bool banker){
       switch(command[0]){
       case 0: // Requesting resources
 	// If resources and either not banker or safe state
-	if(available_resources[command[1]] >= command[2] && (!banker || banker_safe(command, current_pid))){
-	  //cout << current_pid << " request\n";
-	  chain_abort = false;
-	  process_table[current_pid].current_wait = 0;
-	  available_resources[command[1]] -= command[2];
-	  process_table[current_pid].owned[command[1]] += command[2];
-	  process_table[current_pid].instructions.pop();
+	if(process_table[current_pid].owned[command[1]]+command[2] > process_table[current_pid].requests[command[1]]){
+	  results_table.emplace(current_pid, "Aborted - Requested Greater Resources than Claimed");
+	  kill_process(current_pid, current_process);
+	  num_finished++;
 	} else {
-	  //cout << current_pid << " waiting\n";
-	  if(!chain_abort){
-	    process_table[current_pid].current_wait++;
-	    process_table[current_pid].waiting++;
+	  if(available_resources[command[1]] >= command[2] && (!banker || banker_safe(command, current_pid))){
+	    //cout << current_pid << " request\n";
+	    chain_abort = false;
+	    process_table[current_pid].current_wait = 0;
+	    available_resources[command[1]] -= command[2];
+	    process_table[current_pid].owned[command[1]] += command[2];
+	    process_table[current_pid].instructions.pop();
+	  } else {
+	    //cout << current_pid << " waiting\n";
+	    if(!chain_abort){
+	      process_table[current_pid].current_wait++;
+	      process_table[current_pid].waiting++;
+	    }
+	    num_blocked += 1;
 	  }
-	  num_blocked += 1;
 	}
 	break;
       case 1: // Releasing resources
