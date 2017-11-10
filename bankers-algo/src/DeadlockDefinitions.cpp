@@ -227,8 +227,10 @@ void Deadlock::check_exceeds(){
 void Deadlock::simulate(bool banker){
   int current_pid, num_finished = 0;
   bool chain_abort = false;
-  // Confirm Legitimate claims
-  check_exceeds();
+  // Confirm Legitimate claims in the banker Algo
+  if(banker){
+      check_exceeds();
+  }
   while(num_finished < num_processes){
     ++phase;
     //cout << phase << "-------------------\n";
