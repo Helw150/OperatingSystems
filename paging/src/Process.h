@@ -10,9 +10,9 @@ public:
 
   // Probability Variables
   float A, B, C, D;
- 
-
-  Process(float a, float b, float c);
+  int residency_time, faults, evictions,  current_word, number_of_references;
+  
+  Process(float a, float b, float c, int reference_num);
 };
 
 #endif
