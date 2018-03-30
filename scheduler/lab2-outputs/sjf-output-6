@@ -1,33 +1,35 @@
 The original input was: 3 (0 1 5 1) (0 1 5 1) (0 1 10 1) 
-The (sorted) input is:  3 (0 1 5 1) (0 1 5 1) (0 1 10 1) 
-
-The scheduling algorithm used was Shortest Job First
+The sorted input was:   3 (0 1 5 1) (0 1 5 1) (0 1 10 1) 
+The Scheduling Algorithm used was Shortest Job First
 
 Process 0:
 	(A,B,C,M) = (0,1,5,1)
-	Finishing time: 9
-	Turnaround time: 9
-	I/O time: 4
-	Waiting time: 0
+	Finishing Time: 9
+	Turnaround Time: 9
+	I/O Time: 4
+	Waiting Time: 0
+
 
 Process 1:
 	(A,B,C,M) = (0,1,5,1)
-	Finishing time: 10
-	Turnaround time: 10
-	I/O time: 4
-	Waiting time: 1
+	Finishing Time: 10
+	Turnaround Time: 10
+	I/O Time: 4
+	Waiting Time: 1
+
 
 Process 2:
 	(A,B,C,M) = (0,1,10,1)
-	Finishing time: 29
-	Turnaround time: 29
-	I/O time: 9
-	Waiting time: 10
+	Finishing Time: 29
+	Turnaround Time: 29
+	I/O Time: 9
+	Waiting Time: 10
+
 
 Summary Data:
-	Finishing time: 29
+	Finishing Time: 29
 	CPU Utilization: 0.689655
 	I/O Utilization: 0.586207
-	Throughput: 10.344828 processes per hundred cycles
-	Average turnaround time: 16.000000
-	Average waiting time: 3.666667
+	Throughput: 10.3448 processes per hundred cycles
+	Average Turnaround: 16
+	Average Waiting Time: 3.33333

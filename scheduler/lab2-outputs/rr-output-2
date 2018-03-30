@@ -1,26 +1,27 @@
 The original input was: 2 (0 1 5 1) (0 1 5 1) 
-The (sorted) input is:  2 (0 1 5 1) (0 1 5 1) 
-
-The scheduling algorithm used was Round Robbin
+The sorted input was:   2 (0 1 5 1) (0 1 5 1) 
+The Scheduling Algorithm used was Round Robin
 
 Process 0:
 	(A,B,C,M) = (0,1,5,1)
-	Finishing time: 9
-	Turnaround time: 9
-	I/O time: 4
-	Waiting time: 0
+	Finishing Time: 9
+	Turnaround Time: 9
+	I/O Time: 4
+	Waiting Time: 0
+
 
 Process 1:
 	(A,B,C,M) = (0,1,5,1)
-	Finishing time: 10
-	Turnaround time: 10
-	I/O time: 4
-	Waiting time: 1
+	Finishing Time: 10
+	Turnaround Time: 10
+	I/O Time: 4
+	Waiting Time: 1
+
 
 Summary Data:
-	Finishing time: 10
-	CPU Utilization: 1.000000
-	I/O Utilization: 0.800000
-	Throughput: 20.000000 processes per hundred cycles
-	Average turnaround time: 9.500000
-	Average waiting time: 0.500000
+	Finishing Time: 10
+	CPU Utilization: 1
+	I/O Utilization: 0.8
+	Throughput: 20 processes per hundred cycles
+	Average Turnaround: 9.5
+	Average Waiting Time: 0.5
